@@ -5,17 +5,22 @@
  */
 package listaproductos;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Joaco
  */
 public class VistaProductos extends javax.swing.JFrame {
-
+    private final DefaultTableModel modelo = new DefaultTableModel();
     /**
      * Creates new form VistaProductos
      */
     public VistaProductos() {
         initComponents();
+        armarCabecera();
+        
     }
 
     /**
@@ -43,17 +48,11 @@ public class VistaProductos extends javax.swing.JFrame {
         jcCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronica", "Ropa", "Comida" }));
         jcCategoria.setSelectedIndex(-1);
         jcCategoria.setToolTipText("");
-        jcCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcCategoriaActionPerformed(evt);
-            }
-        });
 
         jbAgregar.setText("Agregar");
-
-        jtNombre.addActionListener(new java.awt.event.ActionListener() {
+        jbAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtNombreActionPerformed(evt);
+                jbAgregarActionPerformed(evt);
             }
         });
 
@@ -68,13 +67,13 @@ public class VistaProductos extends javax.swing.JFrame {
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3"
             }
         ));
         jScrollPane1.setViewportView(jTable);
@@ -100,7 +99,7 @@ public class VistaProductos extends javax.swing.JFrame {
                 .addComponent(jbAgregar)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 72, Short.MAX_VALUE)
+                .addGap(0, 57, Short.MAX_VALUE)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40))
             .addGroup(layout.createSequentialGroup()
@@ -128,54 +127,49 @@ public class VistaProductos extends javax.swing.JFrame {
                 .addComponent(jbAgregar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jcCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcCategoriaActionPerformed
+    private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jcCategoriaActionPerformed
-
-    private void jtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtNombreActionPerformed
-
+        String categoria = (String) jcCategoria.getSelectedItem();
+        String nombre = jtNombre.getText();
+        double precio =0;
+        try{
+            precio = Double.parseDouble(jtPrecio.getText());
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Ingresar un numero valido.");
+            return;
+        }
+        if((!nombre.equals(""))&&(precio >0)){
+        
+        Object arr[] = {"categoria", "nombre", precio};
+        modelo.addRow(arr);}
+        else{JOptionPane.showMessageDialog(this, "Favor ingresar datos");
+        
+    }//GEN-LAST:event_jbAgregarActionPerformed
+        jtNombre.setText("");
+        jtPrecio.setText("");
+        jcCategoria.setSelectedIndex(-1);
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new VistaProductos().setVisible(true);
         }
-        //</editor-fold>
+    });
+}
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VistaProductos().setVisible(true);
-            }
-        });
-    }
+    
+    
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -189,4 +183,11 @@ public class VistaProductos extends javax.swing.JFrame {
     private javax.swing.JTextField jtNombre;
     private javax.swing.JTextField jtPrecio;
     // End of variables declaration//GEN-END:variables
+
+    private void armarCabecera() {
+        modelo.addColumn("Nombre: ");
+        modelo.addColumn("Categoria: ");
+        modelo.addColumn("Precio: ");
+        jTable.setModel(modelo);
+    }
 }
